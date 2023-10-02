@@ -18,9 +18,10 @@ namespace Road23.WebApi.Tests.RepositoryTests
 
 
 			// Act
-			//var result = mockCategoryRepository.
+			var result = mockCategoryRepository.Object.GetCategories();
 
 			// Assert
+
 		}
 	}
 }
