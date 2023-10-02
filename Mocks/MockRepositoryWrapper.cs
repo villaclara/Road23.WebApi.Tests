@@ -129,9 +129,57 @@ namespace Road23.WebApi.Tests.Mocks
 		{
 			var mock = new Mock<ICandleItemRepository>();
 
+			var candles = new List<CandleItem>()
+			{
+				new CandleItem
+				{
+					Id = 1,
+					Name = "first candle",
+					Description = "first description",
+					RealCost = 1,
+					SellPrice = 1,
+					BurningTimeMins = 1,
+					HeightCM = 1,
+					PhotoLink = "",
+					Ingredient = new CandleIngredient { Id = 1, CandleId = 1, WaxNeededGram = 1, WickForDiameterCD = 1 },
+					CategoryId = 1
+				},
+				new CandleItem
+				{
+					Id = 2,
+					Name = "second candle",
+					Description = "second description",
+					RealCost = 2,
+					SellPrice = 2,
+					BurningTimeMins = 2,
+					HeightCM = 2,
+					PhotoLink = "",
+					Ingredient = new CandleIngredient { Id = 2, CandleId = 2, WaxNeededGram = 2, WickForDiameterCD = 2 },
+					CategoryId = 1
+				},
+				new CandleItem
+				{
+					Id = 3,
+					Name = "third candle",
+					Description = "third description",
+					RealCost = 3,
+					SellPrice = 3,
+					BurningTimeMins = 3,
+					HeightCM = 3,
+					PhotoLink = "",
+					Ingredient = new CandleIngredient { Id = 3, CandleId = 3, WaxNeededGram = 3, WickForDiameterCD = 3 },
+					CategoryId = 1
+				},
+			};
 
-
-
+			mock.Setup(m => m.GetCandles()).Returns(candles);
+			mock.Setup(m => m.GetCandleById(It.IsAny<int>())).Returns((int id) => candles.FirstOrDefault(c => c.Id == id));
+			mock.Setup(m => m.GetCandleByName(It.IsAny<string>())).Returns((string name) => candles.FirstOrDefault((c) => c.Name == name));
+			mock.Setup(m => m.CandleExistsById(It.IsAny<int>())).Returns((int id) => candles.Any(c => c.Id == id));
+			mock.Setup(m => m.GetCandlesFromCategory(It.IsAny<int>())).Returns((int id) => candles.Where(c => c.CategoryId == id).ToList());
+			mock.Setup(m => m.CreateCandleAsync(It.IsAny<CandleItem>()).Result).Returns((CandleItem item) => item);
+			mock.Setup(m => m.UpdateCandleAsync(It.IsAny<CandleItem>()).Result).Returns((CandleItem item) => item);
+			mock.Setup(m => m.RemoveCandleAsync(It.IsAny<CandleItem>()).Result).Returns((CandleItem item) => item);
 
 			return mock;
 		}
